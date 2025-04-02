@@ -4,7 +4,12 @@ var _nodeCrypto = require("node:crypto");
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id;
   delete item._id;
+  console.log("--------------ITEM----------------");
+  console.log(item);
+  console.log("-------------NITEM----------------");
   const nItem = formatNodeHelper(item);
+  console.log(nItem);
+  console.log("----------------------------------");
   const nodeMetadata = {
     id,
     parent: null,
