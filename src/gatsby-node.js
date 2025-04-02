@@ -53,7 +53,7 @@ exports.sourceNodes = async (
   /*
    * The existing, non-preview code path!
    */
-  const promises = objectTypes.map(object =>
+  const promises = objectTypes.map((object) =>
     fetchData({
       apiURL,
       bucketSlug,
@@ -71,7 +71,7 @@ exports.sourceNodes = async (
   // Create nodes.
   objectTypes.forEach((_item, i) => {
     const items = data[i]
-    items.forEach(item => {
+    items.forEach((item) => {
       createNodeHelper(item, helperObject)
     })
   })

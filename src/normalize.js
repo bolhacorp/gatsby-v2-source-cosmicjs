@@ -1,10 +1,10 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto'
 
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id
   delete item._id
 
-  const nItem  = formatNodeHelper(item);
+  const nItem = formatNodeHelper(item)
 
   const nodeMetadata = {
     id,
@@ -20,7 +20,7 @@ exports.processObject = (type, item, createContentDigest) => {
 }
 
 const formatNodeHelper = (node) => {
-  const object = Object.getOwnPropertyNames(node.metadata);
+  const object = Object.getOwnPropertyNames(node.metadata)
 
   const metafield = {
     id: null,
@@ -29,22 +29,27 @@ const formatNodeHelper = (node) => {
     title: null,
     key: null,
     value: null,
-    required: null
-  };
+    required: null,
+  }
 
   let nNode = {
     id: node.id,
     slug: node.slug,
     title: node.title,
-    metafields: []
-  };
+    metafields: [],
+  }
 
-  object.map(el => {
-    if(['string','number', 'boolean'].includes(typeof node.metadata[el])){
-      let nMetafield = {...metafield, id: randomUUID(), key: el, value: node.metadata[el]};
-      nNode.metafields.push(nMetafield);
+  object.map((el) => {
+    if (['string', 'number', 'boolean'].includes(typeof node.metadata[el])) {
+      let nMetafield = {
+        ...metafield,
+        id: randomUUID(),
+        key: el,
+        value: node.metadata[el],
+      }
+      nNode.metafields.push(nMetafield)
     }
-  });
+  })
 
-  return nNode;
+  return nNode
 }

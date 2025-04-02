@@ -29,23 +29,22 @@ module.exports = async ({
     type: objectType,
     limit: limit,
     query: { type: objectType },
-    props: "id,slug,title,metadata,type",
+    props: 'id,slug,title,metadata,type',
     ...(preview && {
-      status: 'all'
+      status: 'all',
     }),
-    ...(apiAccess && apiAccess.read_key && {
-      read_key: apiAccess.read_key
-    })
-
-  };
+    ...(apiAccess &&
+      apiAccess.read_key && {
+        read_key: apiAccess.read_key,
+      }),
+  }
 
   const axiosHeader = {
     headers: {
-      'Accept-Encoding': 'gzip, deflate'
+      'Accept-Encoding': 'gzip, deflate',
     },
-    urlParams
-  };
-
+    urlParams,
+  }
 
   // Define API endpoint.
   let apiEndpoint = `${apiURL}/${bucketSlug}/objects`
@@ -147,7 +146,7 @@ module.exports = async ({
 
   // Map and clean data.
   if (objects.length > 0) {
-    objects = objects.map(item => clean(item))
+    objects = objects.map((item) => clean(item))
   }
   return objects
 }
@@ -158,7 +157,7 @@ module.exports = async ({
  * @param {object} item - Entry needing clean
  * @returns {object} output - Object cleaned
  */
-const clean = item => {
+const clean = (item) => {
   _.forEach(item, (value, key) => {
     if (_.startsWith(key, `__`)) {
       delete item[key]
