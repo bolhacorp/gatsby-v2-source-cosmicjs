@@ -5,7 +5,7 @@ const { createGatsbyImageResolver } = require('./gatsby-image-resolver')
 exports.sourceNodes = async (
   { actions, webhookBody, createContentDigest, getNode },
   {
-    apiURL = 'https://api.cosmicjs.com/v1',
+    apiURL = 'https://api.cosmicjs.com/v3',
     bucketSlug = '',
     objectTypes = [],
     apiAccess = {},

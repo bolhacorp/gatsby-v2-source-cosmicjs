@@ -18,37 +18,37 @@ module.exports = async ({
     object.params && object.params.limit ? object.params.limit : limit
 
   const timeLabel = `Fetch Cosmic JS data for (${objectType})`
-  const axiosHeader = {
-    headers: {
-      'Accept-Encoding': 'gzip, deflate',
-    },
-  }
+
   let objects = []
   let skip = 0
   console.time(timeLabel)
   console.log(`Starting to fetch data from Cosmic JS (${objectType})`)
 
   // Define URL params
-  let urlParams = queryString.stringify({
+  let urlParams = {
     type: objectType,
+    limit: limit,
+    query: { type: objectType },
+    props: "id,slug,title,metadata,type",
     ...(preview && {
-      status: 'all',
+      status: 'all'
     }),
-    ...(apiAccess &&
-      apiAccess.read_key && {
-        read_key: apiAccess.read_key,
-      }),
-  })
+    ...(apiAccess && apiAccess.read_key && {
+      read_key: apiAccess.read_key
+    })
 
-  // Handle additional API request parameters from gatsby-config.js
-  if (object.params) {
-    urlParams += '&' + queryString.stringify(object.params)
-  } else {
-    urlParams += `&limit=${batchSize}`
-  }
+  };
+
+  const axiosHeader = {
+    headers: {
+      'Accept-Encoding': 'gzip, deflate'
+    },
+    urlParams
+  };
+
 
   // Define API endpoint.
-  let apiEndpoint = `${apiURL}/${bucketSlug}/objects?${urlParams}`
+  let apiEndpoint = `${apiURL}/${bucketSlug}/objects`
 
   if (debug) {
     console.info('api endpoint: ', apiEndpoint)

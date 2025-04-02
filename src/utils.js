@@ -80,5 +80,6 @@ exports.createNodeHelper = (item, helperObject) => {
   }
   let typeSlug = generateTypeSlug(item.type_slug)
   const node = processObject(typeSlug, item, createContentDigest)
+
   createNode(node)
 }
