@@ -71,4 +71,7 @@ exports.createNodeHelper = (item, helperObject) => {
   const node = processObject(typeSlug, item, createContentDigest);
   createNode(node);
 };
+exports.generateID = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+};
 //# sourceMappingURL=utils.js.map
