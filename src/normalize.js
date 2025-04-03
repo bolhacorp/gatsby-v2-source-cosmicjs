@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
-
+const { generateID } = require('./utils')
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id
   delete item._id
@@ -47,7 +46,7 @@ const formatNodeHelper = (node) => {
     if (['string', 'number', 'boolean'].includes(typeof node.metadata[el])) {
       let nMetafield = {
         ...metafield,
-        id: uuidv4(),
+        id: generateID(),
         key: el,
         value: node.metadata[el],
       }

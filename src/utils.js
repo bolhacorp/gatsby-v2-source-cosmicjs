@@ -83,3 +83,7 @@ exports.createNodeHelper = (item, helperObject) => {
 
   createNode(node)
 }
+
+exports.generateID = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+}
