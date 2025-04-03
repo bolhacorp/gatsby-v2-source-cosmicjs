@@ -1,5 +1,4 @@
-
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id

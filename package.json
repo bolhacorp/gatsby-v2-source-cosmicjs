@@ -35,7 +35,7 @@
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "query-string": "^6.10.1",
-    "uuid": "^11.1.0"
+    "uuid": "8"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
