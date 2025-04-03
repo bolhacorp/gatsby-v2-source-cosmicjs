@@ -25,7 +25,7 @@ module.exports = async ({
   console.log(`Starting to fetch data from Cosmic JS (${objectType})`)
 
   // Define URL params
-  let urlParams = {
+  let params = {
     type: objectType,
     limit: limit,
     query: { type: objectType },
@@ -43,11 +43,11 @@ module.exports = async ({
     headers: {
       'Accept-Encoding': 'gzip, deflate',
     },
-    urlParams,
+    params,
   }
 
   // Define API endpoint.
-  let apiEndpoint = `${apiURL}/${bucketSlug}/objects`
+  let apiEndpoint = `${apiURL}/buckets/${bucketSlug}/objects`
 
   if (debug) {
     console.info('api endpoint: ', apiEndpoint)
