@@ -1,15 +1,16 @@
-import { randomUUID } from 'node:crypto'
+
+import { v4 as uuidv4 } from 'uuid';
 
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id
   delete item._id
 
-  console.log("--------------ITEM----------------")
+  console.log('--------------ITEM----------------')
   console.log(item)
-  console.log("-------------NITEM----------------")
-  const nItem = formatNodeHelper(item);
+  console.log('-------------NITEM----------------')
+  const nItem = formatNodeHelper(item)
   console.log(nItem)
-  console.log("----------------------------------")
+  console.log('----------------------------------')
   const nodeMetadata = {
     id,
     parent: null,
@@ -47,7 +48,7 @@ const formatNodeHelper = (node) => {
     if (['string', 'number', 'boolean'].includes(typeof node.metadata[el])) {
       let nMetafield = {
         ...metafield,
-        id: randomUUID(),
+        id: uuidv4(),
         key: el,
         value: node.metadata[el],
       }
