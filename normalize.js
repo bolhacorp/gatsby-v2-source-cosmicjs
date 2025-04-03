@@ -1,15 +1,15 @@
 "use strict";
 
-var _nodeCrypto = require("node:crypto");
+var _uuid = require("uuid");
 exports.processObject = (type, item, createContentDigest) => {
   const id = item._id || item.id;
   delete item._id;
-  console.log("--------------ITEM----------------");
+  console.log('--------------ITEM----------------');
   console.log(item);
-  console.log("-------------NITEM----------------");
+  console.log('-------------NITEM----------------');
   const nItem = formatNodeHelper(item);
   console.log(nItem);
-  console.log("----------------------------------");
+  console.log('----------------------------------');
   const nodeMetadata = {
     id,
     parent: null,
@@ -43,7 +43,7 @@ const formatNodeHelper = node => {
     if (['string', 'number', 'boolean'].includes(typeof node.metadata[el])) {
       let nMetafield = {
         ...metafield,
-        id: (0, _nodeCrypto.randomUUID)(),
+        id: (0, _uuid.v4)(),
         key: el,
         value: node.metadata[el]
       };
