@@ -1,12 +1,11 @@
-const { generateID } = require('./utils')
-exports.processObject = (type, item, createContentDigest) => {
+exports.processObject = (type, item, createContentDigest, generateID) => {
   const id = item._id || item.id
   delete item._id
 
   console.log('--------------ITEM----------------')
   console.log(item)
   console.log('-------------NITEM----------------')
-  const nItem = formatNodeHelper(item)
+  const nItem = formatNodeHelper(item, generateID)
   console.log(nItem)
   console.log('----------------------------------')
   const nodeMetadata = {
@@ -22,7 +21,7 @@ exports.processObject = (type, item, createContentDigest) => {
   return Object.assign({}, item, nodeMetadata)
 }
 
-const formatNodeHelper = (node) => {
+const formatNodeHelper = (node, generateID) => {
   const object = Object.getOwnPropertyNames(node.metadata)
 
   const metafield = {

@@ -1,5 +1,5 @@
 const fetchData = require('./fetch')
-const { createNodeHelper } = require('./utils')
+const { createNodeHelper, generateID } = require('./utils')
 const { createGatsbyImageResolver } = require('./gatsby-image-resolver')
 
 exports.sourceNodes = async (
@@ -21,6 +21,7 @@ exports.sourceNodes = async (
     createContentDigest,
     createNode,
     localMedia,
+    generateID
   }
 
   /*

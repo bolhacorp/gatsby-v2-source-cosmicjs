@@ -74,12 +74,12 @@ const createMediaArray = (item, helperObject) => {
 }
 
 exports.createNodeHelper = (item, helperObject) => {
-  const { createContentDigest, createNode, localMedia } = helperObject
+  const { createContentDigest, createNode, localMedia, generateID } = helperObject
   if (localMedia) {
     item = createMediaArray(item, helperObject)
   }
   let typeSlug = generateTypeSlug(item.type_slug)
-  const node = processObject(typeSlug, item, createContentDigest)
+  const node = processObject(typeSlug, item, createContentDigest, generateID)
 
   createNode(node)
 }

@@ -2,7 +2,8 @@
 
 const fetchData = require('./fetch');
 const {
-  createNodeHelper
+  createNodeHelper,
+  generateID
 } = require('./utils');
 const {
   createGatsbyImageResolver
@@ -29,7 +30,8 @@ exports.sourceNodes = async ({
   const helperObject = {
     createContentDigest,
     createNode,
-    localMedia
+    localMedia,
+    generateID
   };
 
   /*
