@@ -74,7 +74,8 @@ const createMediaArray = (item, helperObject) => {
 }
 
 exports.createNodeHelper = (item, helperObject) => {
-  const { createContentDigest, createNode, localMedia, generateID } = helperObject
+  const { createContentDigest, createNode, localMedia, generateID } =
+    helperObject
   if (localMedia) {
     item = createMediaArray(item, helperObject)
   }

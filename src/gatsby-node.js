@@ -21,7 +21,7 @@ exports.sourceNodes = async (
     createContentDigest,
     createNode,
     localMedia,
-    generateID
+    generateID,
   }
 
   /*
