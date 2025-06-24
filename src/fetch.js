@@ -147,7 +147,7 @@ module.exports = async ({
 
   // Map and clean data.
   if (objects.length > 0) {
-    objects = objects.map(item => clean(item))
+    objects = objects.map((item) => clean(item))
   }
   return objects
 }
@@ -158,7 +158,7 @@ module.exports = async ({
  * @param {object} item - Entry needing clean
  * @returns {object} output - Object cleaned
  */
-const clean = item => {
+const clean = (item) => {
   _.forEach(item, (value, key) => {
     if (_.startsWith(key, `__`)) {
       delete item[key]
