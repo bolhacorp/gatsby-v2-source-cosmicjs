@@ -3,9 +3,7 @@
 const fetchData = require('./fetch-v2');
 const {
   createNodeHelper,
-  generateID,
-  createIdGenerator,
-  addIdsRecursive
+  generateID
 } = require('./utils');
 const {
   createGatsbyImageResolver
@@ -89,5 +87,27 @@ exports.sourceNodes = async ({
     });
   });
 };
+function createIdGenerator(prefix = 'id') {
+  let counter = 0;
+  return () => `${prefix}-${++counter}`;
+}
+function addIdsRecursive(obj, generateId) {
+  if (Array.isArray(obj)) {
+    return obj.map(item => addIdsRecursive(item, generateId));
+  } else if (obj !== null && typeof obj === 'object') {
+    const newObj = {
+      ...obj,
+      _id: generateId()
+    };
+    for (const key in newObj) {
+      if (newObj.hasOwnProperty(key)) {
+        newObj[key] = addIdsRecursive(newObj[key], generateId);
+      }
+    }
+    return newObj;
+  } else {
+    return obj;
+  }
+}
 exports.createResolvers = createGatsbyImageResolver;
 //# sourceMappingURL=gatsby-node.js.map
