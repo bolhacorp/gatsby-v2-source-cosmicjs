@@ -1,5 +1,5 @@
-const fetchData = require('./fetch')
-const { createNodeHelper, generateID } = require('./utils')
+const fetchData = require('./fetch-v2')
+const { createNodeHelper, generateID, createIdGenerator, addIdsRecursive } = require('./utils')
 const { createGatsbyImageResolver } = require('./gatsby-image-resolver')
 
 exports.sourceNodes = async (
@@ -70,8 +70,10 @@ exports.sourceNodes = async (
   const data = await Promise.all(promises)
 
   // Create nodes.
+  const idGenerator = createIdGenerator('node')
   objectTypes.forEach((_item, i) => {
     const items = data[i]
+    nItems = addIdsRecursive(items, idGenerator)
     items.forEach((item) => {
       createNodeHelper(item, helperObject)
     })
