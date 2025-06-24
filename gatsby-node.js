@@ -1,9 +1,11 @@
 "use strict";
 
-const fetchData = require('./fetch');
+const fetchData = require('./fetch-v2');
 const {
   createNodeHelper,
-  generateID
+  generateID,
+  createIdGenerator,
+  addIdsRecursive
 } = require('./utils');
 const {
   createGatsbyImageResolver
@@ -78,8 +80,10 @@ exports.sourceNodes = async ({
   const data = await Promise.all(promises);
 
   // Create nodes.
+  const idGenerator = createIdGenerator('node');
   objectTypes.forEach((_item, i) => {
     const items = data[i];
+    nItems = addIdsRecursive(items, idGenerator);
     items.forEach(item => {
       createNodeHelper(item, helperObject);
     });

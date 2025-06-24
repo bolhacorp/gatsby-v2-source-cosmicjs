@@ -1,5 +1,10 @@
 const fetchData = require('./fetch-v2')
-const { createNodeHelper, generateID, createIdGenerator, addIdsRecursive } = require('./utils')
+const {
+  createNodeHelper,
+  generateID,
+  createIdGenerator,
+  addIdsRecursive,
+} = require('./utils')
 const { createGatsbyImageResolver } = require('./gatsby-image-resolver')
 
 exports.sourceNodes = async (

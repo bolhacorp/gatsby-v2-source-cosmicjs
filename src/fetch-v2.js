@@ -11,7 +11,6 @@ module.exports = async ({
   preview,
   debug,
 }) => {
-
   /*
   default url:
   https://api.cosmicjs.com/v3/
@@ -28,16 +27,20 @@ module.exports = async ({
   // check if we have a basic object type string, or override config parmas for this object type.
   const objectType = typeof object === 'string' ? object : object.type
   // set the api batch limit to the global setting or the object type override
-  const batchSize = object.params && object.params.limit ? object.params.limit : limit
+  const batchSize =
+    object.params && object.params.limit ? object.params.limit : limit
 
-  const props = object.params && object.params.props ? object.params.props : "id,slug,title,metadata,type"
+  const props =
+    object.params && object.params.props
+      ? object.params.props
+      : 'id,slug,title,metadata,type'
 
   const axiosHeader = {
     headers: {
-      "content-type": "application-json"
+      'content-type': 'application-json',
     },
   }
-  
+
   let objects = []
   let skip = batchSize
   const timeLabel = `Fetch Cosmic JS data for (${objectType} - ${props})`
@@ -51,7 +54,7 @@ module.exports = async ({
     skip: 0,
     read_key: apiAccess.read_key, //"RreXbCIUZexMVdGznLObIprxiSHpLd5ixiMY0CExkkZjaN3u1p",
     depth: 1,
-    props
+    props,
   }
 
   let apiEndpoint = `${apiURL}/buckets/${bucketSlug}/objects`
@@ -153,7 +156,7 @@ module.exports = async ({
 
   // Map and clean data.
   if (objects.length > 0) {
-    objects = objects.map(item => clean(item))
+    objects = objects.map((item) => clean(item))
   }
   return objects
 }
@@ -164,7 +167,7 @@ module.exports = async ({
  * @param {object} item - Entry needing clean
  * @returns {object} output - Object cleaned
  */
-const clean = item => {
+const clean = (item) => {
   _.forEach(item, (value, key) => {
     if (_.startsWith(key, `__`)) {
       delete item[key]

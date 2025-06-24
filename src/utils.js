@@ -90,22 +90,22 @@ exports.generateID = () => {
 }
 
 exports.createIdGenerator = (prefix = 'id') => {
-  let counter = 0;
-  return () => `${prefix}-${++counter}`;
+  let counter = 0
+  return () => `${prefix}-${++counter}`
 }
 
 exports.addIdsRecursive = (obj, generateId) => {
   if (Array.isArray(obj)) {
-    return obj.map(item => addIdsRecursive(item, generateId));
+    return obj.map((item) => addIdsRecursive(item, generateId))
   } else if (obj !== null && typeof obj === 'object') {
-    const newObj = { ...obj, _id: generateId() };
+    const newObj = { ...obj, _id: generateId() }
     for (const key in newObj) {
       if (newObj.hasOwnProperty(key)) {
-        newObj[key] = addIdsRecursive(newObj[key], generateId);
+        newObj[key] = addIdsRecursive(newObj[key], generateId)
       }
     }
-    return newObj;
+    return newObj
   } else {
-    return obj;
+    return obj
   }
 }

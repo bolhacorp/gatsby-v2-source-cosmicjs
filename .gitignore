@@ -3,6 +3,7 @@
 /normalize.js
 /fetch.js
 /utils.js
+/fetch-v2.js
 /gatsby-image-resolver.js
 /yarn.lock
 node_modules

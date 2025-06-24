@@ -75,4 +75,26 @@ exports.createNodeHelper = (item, helperObject) => {
 exports.generateID = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
 };
+exports.createIdGenerator = (prefix = 'id') => {
+  let counter = 0;
+  return () => `${prefix}-${++counter}`;
+};
+exports.addIdsRecursive = (obj, generateId) => {
+  if (Array.isArray(obj)) {
+    return obj.map(item => addIdsRecursive(item, generateId));
+  } else if (obj !== null && typeof obj === 'object') {
+    const newObj = {
+      ...obj,
+      _id: generateId()
+    };
+    for (const key in newObj) {
+      if (newObj.hasOwnProperty(key)) {
+        newObj[key] = addIdsRecursive(newObj[key], generateId);
+      }
+    }
+    return newObj;
+  } else {
+    return obj;
+  }
+};
 //# sourceMappingURL=utils.js.map
