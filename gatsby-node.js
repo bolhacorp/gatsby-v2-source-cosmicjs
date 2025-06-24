@@ -1,0 +1,110 @@
+"use strict";
+
+const fetchData = require('./fetch-v2');
+const {
+  createNodeHelper
+} = require('./utils');
+const {
+  createGatsbyImageResolver
+} = require('./gatsby-image-resolver');
+exports.sourceNodes = async ({
+  actions,
+  webhookBody,
+  createContentDigest,
+  getNode
+}, {
+  apiURL = 'https://api.cosmicjs.com/v3',
+  bucketSlug = '',
+  objectTypes = [],
+  apiAccess = {},
+  limit = 1000,
+  preview = false,
+  localMedia = false,
+  debug = false
+}) => {
+  const {
+    createNode,
+    deleteNode
+  } = actions;
+  const helperObject = {
+    createContentDigest,
+    createNode,
+    localMedia
+  };
+
+  /*
+   * Gatsby preview code path!
+   */
+  if (webhookBody && webhookBody.type) {
+    const item = webhookBody.data;
+    switch (webhookBody.type) {
+      case 'object.deleted':
+        if (Array.isArray(item) && item.length) {
+          for (const id of item) {
+            deleteNode({
+              node: getNode(id)
+            });
+          }
+        }
+        break;
+      case 'object.created.draft':
+      case 'object.created.published':
+      case 'object.edited.draft':
+      case 'object.edited.published':
+        createNodeHelper(item, helperObject);
+        break;
+      default:
+        break;
+    }
+    return;
+  }
+
+  /*
+   * The existing, non-preview code path!
+   */
+  const promises = objectTypes.map(object => fetchData({
+    apiURL,
+    bucketSlug,
+    object,
+    apiAccess,
+    limit,
+    preview,
+    debug
+  }));
+
+  // Execute the promises.
+  const data = await Promise.all(promises);
+  const idGenerator = createIdGenerator('node');
+
+  // Create nodes.
+  objectTypes.forEach((_item, i) => {
+    let items = addIdsRecursive(data[i], idGenerator);
+    items.forEach(item => {
+      createNodeHelper(item, helperObject);
+    });
+  });
+};
+function createIdGenerator(prefix = 'id') {
+  let counter = 0;
+  return () => `${prefix}-${++counter}`;
+}
+function addIdsRecursive(obj, generateId) {
+  if (Array.isArray(obj)) {
+    return obj.map(item => addIdsRecursive(item, generateId));
+  } else if (obj !== null && typeof obj === 'object') {
+    const newObj = {
+      ...obj,
+      _id: generateId()
+    };
+    for (const key in newObj) {
+      if (newObj.hasOwnProperty(key)) {
+        newObj[key] = addIdsRecursive(newObj[key], generateId);
+      }
+    }
+    return newObj;
+  } else {
+    return obj;
+  }
+}
+exports.createResolvers = createGatsbyImageResolver;
+//# sourceMappingURL=gatsby-node.js.map
