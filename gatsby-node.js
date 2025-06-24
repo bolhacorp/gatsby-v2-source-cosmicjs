@@ -80,8 +80,8 @@ exports.sourceNodes = async ({
   // Create nodes.
   const idGenerator = createIdGenerator('node');
   objectTypes.forEach((_item, i) => {
-    const items = data[i];
-    nItems = addIdsRecursive(items, idGenerator);
+    let items = data[i];
+    items = addIdsRecursive(items, idGenerator);
     items.forEach(item => {
       createNodeHelper(item, helperObject);
     });
