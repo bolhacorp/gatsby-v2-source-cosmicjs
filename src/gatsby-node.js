@@ -1,11 +1,11 @@
-const fetchData = require('./fetch')
+const fetchData = require('./fetch-v2')
 const { createNodeHelper } = require('./utils')
 const { createGatsbyImageResolver } = require('./gatsby-image-resolver')
 
 exports.sourceNodes = async (
   { actions, webhookBody, createContentDigest, getNode },
   {
-    apiURL = 'https://api.cosmicjs.com/v1',
+    apiURL = 'https://api.cosmicjs.com/v3',
     bucketSlug = '',
     objectTypes = [],
     apiAccess = {},
@@ -53,7 +53,7 @@ exports.sourceNodes = async (
   /*
    * The existing, non-preview code path!
    */
-  const promises = objectTypes.map(object =>
+  const promises = objectTypes.map((object) =>
     fetchData({
       apiURL,
       bucketSlug,
@@ -68,13 +68,39 @@ exports.sourceNodes = async (
   // Execute the promises.
   const data = await Promise.all(promises)
 
+  const idGenerator = createIdGenerator('node')
+
   // Create nodes.
   objectTypes.forEach((_item, i) => {
-    const items = data[i]
-    items.forEach(item => {
+    let items = addIdsRecursive(data[i], idGenerator)
+    items.forEach((item) => {
       createNodeHelper(item, helperObject)
     })
   })
+}
+
+function createIdGenerator(prefix = 'id') {
+  let counter = 0
+  return () => `${prefix}-${++counter}`
+}
+
+function addIdsRecursive(obj, generateId) {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => addIdsRecursive(item, generateId))
+  } else if (obj !== null && typeof obj === 'object') {
+    const newObj = {
+      ...obj,
+      _id: generateId(),
+    }
+    for (const key in newObj) {
+      if (newObj.hasOwnProperty(key)) {
+        newObj[key] = addIdsRecursive(newObj[key], generateId)
+      }
+    }
+    return newObj
+  } else {
+    return obj
+  }
 }
 
 exports.createResolvers = createGatsbyImageResolver
